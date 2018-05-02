@@ -5,7 +5,6 @@ from django_countries.fields import CountryField
 
 class Profile(models.Model):
 	owner = models.OneToOneField(User, on_delete=models.CASCADE)
-	name = models.TextField()
 	birthday = models.DateField(auto_now=False, auto_now_add=False)
 	country = CountryField()
 	# travelpref = models.ForeignKey(Travelpref, )

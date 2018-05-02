@@ -9,4 +9,6 @@ urlpatterns = [
     path('following/<int:pk>/', views.following, name='following'),
     path('feed/', views.feed, name='feed'),
     path('favorite/<int:pk>/', views.favorite, name='favorite'),
+    path('edit/<int:pk>/', views.editprofile, name='edit'),
+
 ]

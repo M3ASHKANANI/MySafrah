@@ -9,20 +9,25 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title text-center">@{{user.username}}</h5>
+        <h5 class="card-title text-center">@{{profile.owner.username}}</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b>First Name:</b> {{user.first_name}}</li>
-        <li class="list-group-item"><b>Last Name:</b> {{user.last_name}}</li>
-        <li class="list-group-item"><b>Email Name:</b> {{user.email}}</li>
+        <li class="list-group-item"><b></b> {{profile.image}}</li>
+        <li class="list-group-item"><b>First Name:</b> {{profile.owner.first_name}}</li>
+        <li class="list-group-item"><b>Last Name:</b> {{profile.owner.last_name}}</li>
+        <li class="list-group-item"><b>Email Name:</b> {{profile.owner.email}}</li>
+        <li class="list-group-item"><b>Country:</b> {{profile.country}} <i class="{{ profile.country.flag_css }}"></i></li>
+        <li class="list-group-item"><b>Bio:</b> {{profile.bio}}</li>
+        <li class="list-group-item"><b>BirthDay:</b> {{profile.birthday}}</li>
+
       </ul>
       <div class="card-body">
         <div class="row">
           <div class="col-6 text-center">
-            <a href="{% url 'followers' user.pk %}" class="btn btn-outline-danger">Stalkers</a>
+            <a href="{% url 'followers' profile.owner.pk %}" class="btn btn-outline-danger">Stalkers</a>
           </div>
           <div class="col-6 text-center">
-            <a href="{% url 'following' user.pk %}" class="btn btn-outline-primary">Prey</a>
+            <a href="{% url 'following' profile.owner.pk %}" class="btn btn-outline-primary">Prey</a>
           </div>
         </div>
       </div>
@@ -36,9 +41,9 @@
       <div class="card-body">
         <h5 class="card-title text-center">Clues</h5>
       </div>
-      {% if user == request.user %}
+      {% if profile.owner == request.user %}
       <div class="card-body">
-        <form action="{% url 'profile' user.pk %}" method="POST">
+        <form action="{% url 'profile' profile.owner.pk %}" method="POST">
           {% csrf_token %}
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Recipient's username" name="message">
@@ -50,7 +55,7 @@
         {% endif %}
       </div>
       <ul class="list-group list-group-flush">
-        {% for clue in user.clue_set.all  %}
+        {% for clue in profile.owner.clue_set.all  %}
           <li class="list-group-item"><b>{{clue.timestamp}}</b> {{clue.message}}</li>
         {% endfor %}
       </ul>

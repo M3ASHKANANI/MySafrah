@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Follow, Clue, Favorite
+from .models import Follow, Clue, Favorite, Profile
 from django.http import JsonResponse
+from .forms import ProfileForm, UserProfileForm
 
 def profile(request, pk):
     if request.user.is_anonymous:
@@ -15,7 +16,7 @@ def profile(request, pk):
         messages.success(request, "New clue generated for your stalkers!")
 
     context = {
-        "user": User.objects.get(pk=pk)
+        "profile": Profile.objects.get(pk=pk)
     }
     return render(request, 'profile.html', context)
 
@@ -120,3 +121,56 @@ def favorite(request, pk):
         "action": action,
     }
     return JsonResponse(response, safe=False)
+
+def editprofile(request , pk):
+    profile_obj = Profile.objects.get(pk=pk)
+    if not(request.user.is_staff or request.user==profile_obj.owner):
+        raise Http404
+    form = ProfileForm(instance=profile_obj)
+    profile_form = UserProfileForm(instance=profile_obj.owner)
+    if request.method == "POST":
+        form = ProfileForm(request.POST , request.FILES or None, instance=profile_obj)
+        profile_form = UserProfileForm(request.POST , request.FILES or None, instance=profile_obj.owner)
+
+        if form.is_valid() and profile_form.is_valid():
+            form.save()
+            user = form.save()
+            profile = profile_form.save(commit=False)
+            profile.owner = user
+            profile.save()
+            user.save()
+
+            return redirect("profile", pk=pk)
+    context = {
+        "edit_form":form,
+        'profile_form':profile_form,
+        "profile_obj":profile_obj,
+
+    }
+    return render(request, "edit.html", context)
+
+
+
+# def create_profile(request):
+
+#     if request.user.is_anonymous:
+#         return redirect("login")
+
+#     form = ProfileForm()
+
+    
+#     if request.method == "POST":
+#         form = ProfileForm(request.POST, request.FILES or None)
+#         if form.is_valid():
+#             profile_obj = form.save(commit=False)
+#             profile_obj.owner = request.user
+#             profile_obj.save()
+#             return redirect("profile_page")
+#     context = {
+#         "form": form,
+
+#         }
+#     return render(request, 'create_profile.html', context)
+
+
+
