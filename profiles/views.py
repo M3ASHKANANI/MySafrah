@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Follow, Clue, Favorite, Profile
+from .models import Follow, Clue, Favorite, Profile, Traveltype
 from django.http import JsonResponse
 from .forms import ProfileForm, UserProfileForm
 
@@ -138,6 +138,7 @@ def editprofile(request , pk):
             profile = profile_form.save(commit=False)
             profile.owner = user
             profile.save()
+            profile_form.save_m2m()
             user.save()
 
             return redirect("profile", pk=pk)
@@ -148,29 +149,6 @@ def editprofile(request , pk):
 
     }
     return render(request, "edit.html", context)
-
-
-
-# def create_profile(request):
-
-#     if request.user.is_anonymous:
-#         return redirect("login")
-
-#     form = ProfileForm()
-
-    
-#     if request.method == "POST":
-#         form = ProfileForm(request.POST, request.FILES or None)
-#         if form.is_valid():
-#             profile_obj = form.save(commit=False)
-#             profile_obj.owner = request.user
-#             profile_obj.save()
-#             return redirect("profile_page")
-#     context = {
-#         "form": form,
-
-#         }
-#     return render(request, 'create_profile.html', context)
 
 
 

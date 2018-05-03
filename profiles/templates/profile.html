@@ -12,13 +12,21 @@
         <h5 class="card-title text-center">@{{profile.owner.username}}</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b></b> {{profile.image}}</li>
+        {% if profile.image %}
+        <li class="card"><img src='{{profile.image.url}}' style='width:300px; height:300px' ></li>
+        {% endif %}
         <li class="list-group-item"><b>First Name:</b> {{profile.owner.first_name}}</li>
         <li class="list-group-item"><b>Last Name:</b> {{profile.owner.last_name}}</li>
         <li class="list-group-item"><b>Email Name:</b> {{profile.owner.email}}</li>
         <li class="list-group-item"><b>Country:</b> {{profile.country}} <i class="{{ profile.country.flag_css }}"></i></li>
         <li class="list-group-item"><b>Bio:</b> {{profile.bio}}</li>
         <li class="list-group-item"><b>BirthDay:</b> {{profile.birthday}}</li>
+        <li class="list-group-item">Type of traveler :
+        {% for x in profile.travelpref.all %}
+          - {{x}}
+        {% endfor %}
+      </li>
+
 
       </ul>
       <div class="card-body">

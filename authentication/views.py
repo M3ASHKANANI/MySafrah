@@ -15,6 +15,7 @@ def usersignup(request):
             profile = profile_form.save(commit=False)
             profile.owner = user
             profile.save()
+            profile_form.save_m2m()
             user.set_password(user.password)
             user.save()
 

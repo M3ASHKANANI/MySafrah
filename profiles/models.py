@@ -2,15 +2,29 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 
+class Traveltype(models.Model):
+	# solo = models.BooleanField(default=True)
+	# family = models.BooleanField(default=True)
+	# backpack = models.BooleanField(default=True)
+	# business = models.BooleanField(default=True)
+	# couple = models.BooleanField(default=False)
+	# Friends = models.BooleanField(default=False)
+	# medical = models.BooleanField(default=False)
+	title = models.CharField(max_length=120)
+
+	def __str__(self):
+		return self.title
+
 
 class Profile(models.Model):
 	owner = models.OneToOneField(User, on_delete=models.CASCADE)
 	birthday = models.DateField(auto_now=False, auto_now_add=False)
 	country = CountryField()
-	# travelpref = models.ForeignKey(Travelpref, )
+	travelpref = models.ManyToManyField(Traveltype)
 	image = models.ImageField(null=True)
 	established = models.DateField(auto_now_add=True)
 	bio = models.CharField(max_length=350)
+	
 
 
 class Follow(models.Model):
@@ -30,3 +44,20 @@ class Clue(models.Model):
 class Favorite(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	clue = models.ForeignKey(Clue, on_delete=models.CASCADE, related_name="favorites")
+
+
+
+# class Post(models.Model):
+# 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+# 	image = models.ImageField(null=True)
+# 	# hotel = # from google API
+# 	# location = # from google API
+# 	traveltype =
+# 	description = models.CharField(max_length=250)
+# 	rate = 
+# 	suitablefor =
+# 	established = models.DateField(auto_now_add=True)
+
+# class Travelpref(models.Model):
+
+	

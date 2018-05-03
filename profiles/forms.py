@@ -10,8 +10,9 @@ class UserProfileForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['birthday', 'country', 'image', 'bio']
+		fields = ['birthday', 'country', 'image', 'bio', 'travelpref']
 
 		widgets = {
 			"birthday": forms.DateInput(attrs={"type":"date"}),
+			"travelpref": forms.CheckboxSelectMultiple(),
 		}
