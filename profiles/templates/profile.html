@@ -43,6 +43,12 @@
   </div>
 </div>
 
+
+      <div class="mx-auto" style="width: 200px;">
+        <a href="{% url 'create_post' pk=profile.id %}"><button type="button" class="btn btn-primary">Add New Post</button></a>
+      </div>
+
+
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -70,4 +76,22 @@
     </div>
   </div>
 </div>
+
+
+{% for post in posts %}
+      <div class="card bg-light mb-3 mx-auto" style="max-width: 55rem;">
+        {% if post.image %}
+         <img class="card-img-top" src="{{post.image.url}}" alt="Card image cap">
+        {% endif %}
+        <div class="card-header"><h5 class="card-title"> <strong>Title :</strong> {{post.hotel}}</h5></div>
+        <div class="card-body">
+          <p class="card-text">{{post.description}}</p>
+        </div>
+      </div>
+
+
+      {% endfor %}
+
+
+
 {% endblock %}

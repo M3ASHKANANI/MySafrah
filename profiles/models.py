@@ -21,10 +21,13 @@ class Profile(models.Model):
 	birthday = models.DateField(auto_now=False, auto_now_add=False)
 	country = CountryField()
 	travelpref = models.ManyToManyField(Traveltype)
-	image = models.ImageField(null=True)
+	image = models.ImageField(null=True, blank=True)
 	established = models.DateField(auto_now_add=True)
 	bio = models.CharField(max_length=350)
 	
+	def __str__(self):
+		return self.owner
+
 
 
 class Follow(models.Model):
@@ -47,17 +50,23 @@ class Favorite(models.Model):
 
 
 
-# class Post(models.Model):
-# 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-# 	image = models.ImageField(null=True)
-# 	# hotel = # from google API
-# 	# location = # from google API
-# 	traveltype =
-# 	description = models.CharField(max_length=250)
-# 	rate = 
-# 	suitablefor =
-# 	established = models.DateField(auto_now_add=True)
+class Post(models.Model):
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	image = models.ImageField(null=True, blank=True)
+	hotel = models.BooleanField()
+	location = models.BooleanField()
+	posttraveltype = models.ManyToManyField(Traveltype, related_name="posttraveltype") 
+	description = models.CharField(max_length=250)
+	rate = models.BooleanField()
+	suitablefor = models.ManyToManyField(Traveltype, related_name="suitablefor") 
+	established = models.DateField(auto_now_add=True)
 
-# class Travelpref(models.Model):
+	def __str__(self):
+		return self.description
+
+# class Hotel(models.Model):
+# 	city = 
+# 	name =
+# 	image = 
 
 	

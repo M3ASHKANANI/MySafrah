@@ -10,5 +10,6 @@ urlpatterns = [
     path('feed/', views.feed, name='feed'),
     path('favorite/<int:pk>/', views.favorite, name='favorite'),
     path('edit/<int:pk>/', views.editprofile, name='edit'),
+    path('post/<int:pk>/', views.create_post, name='create_post'),
 
 ]
