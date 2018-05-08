@@ -17,6 +17,7 @@ def profile(request, pk):
 	if request.user.is_anonymous:
 
 		return redirect('signin')
+
 	profile_obj = Profile.objects.get(pk=pk)
 	posts = posts_list(request, profile_obj.id)
 	if request.method == "POST":
@@ -103,9 +104,9 @@ def feed(request):
 	for prey in preys:
 		prey_list.append(prey.prey)
 
-	clue_list = Clue.objects.filter(
-		Q(user__in=prey_list)|
-		Q(user=request.user)
+	post_list = Post.objects.filter(
+		Q(profile__owner__in=prey_list)|
+		Q(profile__owner=request.user)
 		).distinct()
 
 	# favorite_list = []
@@ -116,7 +117,7 @@ def feed(request):
 	favorite_list = user.favorite_set.all().values_list('clue_id', flat=True)
 
 	context = {
-		"feed": clue_list,
+		"feed": post_list,
 		"favorites":favorite_list,
 	}
 	return render(request, 'feed.html', context)
@@ -169,12 +170,13 @@ def create_post(request, pk):
 	form = PostForm()
 	profile_obj = Profile.objects.get(pk=pk)
 	if request.method == "POST":
-		form = PostForm(request.POST)
+		form = PostForm(request.POST, request.FILES or None)
 		if form.is_valid():
 			post_obj = form.save(commit=False)
 			post_obj.profile = profile_obj
 			post_obj.user = request.user
 			post_obj.save()
+			form.save_m2m()
 
 			return redirect("profile", pk=pk)
 		print (form.errors)

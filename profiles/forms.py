@@ -21,11 +21,12 @@ class ProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
 	class Meta:
 		model = Post
-		fields = ['image','hotel','location','posttraveltype','description','rate','suitablefor']
+		fields = ['image','hotel','country','city','posttraveltype','description','rate','suitablefor','facility']
 
 		widgets = {
 			"posttraveltype": forms.CheckboxSelectMultiple(),
 			"suitablefor": forms.CheckboxSelectMultiple(),
+			"facility": forms.CheckboxSelectMultiple(),
 		}
 
 

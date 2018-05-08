@@ -10,6 +10,20 @@
   </head>
   <body>
 
+    <nav class="navbar navbar-light bg-light">
+    <form class="form-inline" action="{% url 'search-users' %}" method="GET">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">@</span>
+        </div>
+        <input class="form-control mr-sm-2" type="search" placeholder="Username..." aria-label="Username" aria-describedby="basic-addon1" name="q"> 
+        <input class="btn btn-primary" type="submit" value="Search">
+      </div>
+      
+    </form>
+  </nav>
+
+
     {% include "messages.html" %}
     <br>
     <div class="container">

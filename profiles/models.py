@@ -1,16 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Traveltype(models.Model):
-	# solo = models.BooleanField(default=True)
-	# family = models.BooleanField(default=True)
-	# backpack = models.BooleanField(default=True)
-	# business = models.BooleanField(default=True)
-	# couple = models.BooleanField(default=False)
-	# Friends = models.BooleanField(default=False)
-	# medical = models.BooleanField(default=False)
 	title = models.CharField(max_length=120)
+	
+
+	def __str__(self):
+		return self.title
+
+# class FacilityRate(models.Model):
+	# facrate = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+
+class Facility(models.Model):
+	title = models.CharField(max_length=120)
+	# facrate = models.ManyToManyField(FacilityRate) 
 
 	def __str__(self):
 		return self.title
@@ -25,8 +30,6 @@ class Profile(models.Model):
 	established = models.DateField(auto_now_add=True)
 	bio = models.CharField(max_length=350)
 	
-	def __str__(self):
-		return self.owner
 
 
 
@@ -53,16 +56,19 @@ class Favorite(models.Model):
 class Post(models.Model):
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	image = models.ImageField(null=True, blank=True)
-	hotel = models.BooleanField()
-	location = models.BooleanField()
+	hotel = models.CharField(max_length=100)
+	country = models.CharField(max_length=100)
+	city = models.CharField(max_length=100)
 	posttraveltype = models.ManyToManyField(Traveltype, related_name="posttraveltype") 
 	description = models.CharField(max_length=250)
-	rate = models.BooleanField()
+	rate = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 	suitablefor = models.ManyToManyField(Traveltype, related_name="suitablefor") 
 	established = models.DateField(auto_now_add=True)
+	facility = models.ManyToManyField(Facility)
 
 	def __str__(self):
 		return self.description
+
 
 # class Hotel(models.Model):
 # 	city = 

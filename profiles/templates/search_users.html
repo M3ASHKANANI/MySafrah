@@ -10,7 +10,7 @@
       <tbody>
         {% for person in users %}
         <tr>
-          <td><a href="{% url 'profile' person.pk %}">{{person}}</a></td>
+          <td><a href="{% url 'profile' person.profile.pk %}">{{person}}</a></td>
             {% if person in prey_list %}
               <td><a href="{% url 'follow' person.pk %}" class="btn btn-outline-danger">UnStalk</a></td>
             {% else %}

@@ -15,13 +15,13 @@
   <div class="col-12">
     <div class="card">
       <ul class="list-group list-group-flush">
-        {% for clue in feed  %}
+        {% for post in feed  %}
           <li class="list-group-item">
             <div class="float-left">
-              <b>{{clue.user}}: </b> {{clue.message}} <span class="blockquote-footer">{{clue.timestamp}}</span>
+              <b>{{post.profile.owner}}: </b> {{post.description}} <span class="blockquote-footer">{{post.timestamp}}</span>
             </div>
             <div class="float-right">
-              <i id="star-{{clue.id}}" class="fas fa-star fa-spin {% if clue.id in favorites %}text-warning{% endif %}" onclick="favorite_me({{clue.id}})"></i>
+              <i id="star-{{post.id}}" class="fas fa-star fa-spin {% if post.id in favorites %}text-warning{% endif %}" onclick="favorite_me({{post.id}})"></i>
             </div>
           </li>
         {% endfor %}
