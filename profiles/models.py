@@ -19,8 +19,7 @@ class Facility(models.Model):
 
 	def __str__(self):
 		return self.title
-
-
+	
 class Profile(models.Model):
 	owner = models.OneToOneField(User, on_delete=models.CASCADE)
 	birthday = models.DateField(auto_now=False, auto_now_add=False)
@@ -69,6 +68,11 @@ class Post(models.Model):
 	def __str__(self):
 		return self.description
 
+class FacilityRating(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
+	rating = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 
 # class Hotel(models.Model):
 # 	city = 

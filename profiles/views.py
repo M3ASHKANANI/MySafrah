@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Follow, Clue, Favorite, Profile, Traveltype, Post
+from .models import Follow, Clue, Favorite, Profile, Traveltype, Post, FacilityRating, Facility
 from django.http import JsonResponse
-from .forms import ProfileForm, UserProfileForm, PostForm
+from .forms import ProfileForm, UserProfileForm, PostForm, FacilityForm
 
 
 def posts_list(request,pk):
@@ -187,8 +187,14 @@ def create_post(request, pk):
 	}
 	return render(request, "create_post.html", context)
 
-
-
+def rate_facilities(request, pk):
+	
+	post = Post.objects.get(pk=pk)
+	
+	context = {
+		"facilities": post.facility.all(),
+	}
+	return render(request, "rate_facilities.html", context)
 
 
 

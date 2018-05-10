@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Post
+from .models import Profile, Post, FacilityRating
 
 class UserProfileForm(forms.ModelForm):
 	class Meta:
@@ -28,7 +28,10 @@ class PostForm(forms.ModelForm):
 			"suitablefor": forms.CheckboxSelectMultiple(),
 			"facility": forms.CheckboxSelectMultiple(),
 		}
-
+class FacilityForm(forms.ModelForm):
+	class Meta:
+		model = FacilityRating
+		fields = ['rating']
 
 # class HotelForm(forms.ModelForm):
 # 	class Meta:

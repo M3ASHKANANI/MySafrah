@@ -87,7 +87,10 @@
         <div class="card-body">
           <p class="card-text">{{post.description}}</p>
         </div>
-      </div>
+      
+      <div class="mx-auto" style="width: 200px;">
+        <a href="{% url 'rate_facilities' pk=post.id %}"><button type="button" class="btn btn-primary">Rate Facilities</button></a>
+      </div></div>
 
 
       {% endfor %}
