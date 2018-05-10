@@ -49,33 +49,6 @@
       </div>
 
 
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title text-center">Clues</h5>
-      </div>
-      {% if profile.owner == request.user %}
-      <div class="card-body">
-        <form action="{% url 'profile' profile.owner.pk %}" method="POST">
-          {% csrf_token %}
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Recipient's username" name="message">
-            <div class="input-group-append">
-              <input class="btn btn-outline-info" type="submit" value="Leave Clue">
-            </div>
-          </div>
-        </form>
-        {% endif %}
-      </div>
-      <ul class="list-group list-group-flush">
-        {% for clue in profile.owner.clue_set.all  %}
-          <li class="list-group-item"><b>{{clue.timestamp}}</b> {{clue.message}}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
 
 
 {% for post in posts %}
@@ -87,10 +60,15 @@
         <div class="card-body">
           <p class="card-text">{{post.description}}</p>
         </div>
-      
-      <div class="mx-auto" style="width: 200px;">
-        <a href="{% url 'rate_facilities' pk=post.id %}"><button type="button" class="btn btn-primary">Rate Facilities</button></a>
-      </div></div>
+
+        {% for facility in post.facility.all %}
+          <div class="card-body">
+            <p class="card-text">{{facility.title}}
+            <a href="{% url 'rate_facilities' post.id facility.id %}"><button type="button" class="btn btn-primary">Rate Facilities</button></a>
+          </p>
+          </div>
+        {% endfor %}
+    </div>
 
 
       {% endfor %}

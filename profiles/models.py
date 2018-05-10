@@ -73,6 +73,7 @@ class FacilityRating(models.Model):
 	post = models.ForeignKey(Post, on_delete=models.CASCADE)
 	facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
 	rating = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+	comment = models.CharField(max_length=100) 
 
 # class Hotel(models.Model):
 # 	city = 

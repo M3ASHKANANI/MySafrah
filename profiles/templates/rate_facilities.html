@@ -8,16 +8,21 @@ Create Post
 
 {% block content %}
 <div class="container">
-	{% for post in facilities %}
-	<form action="{% url 'rate_facilities' pk=post.id %}" method="POST" enctype="multipart/form-data">
-		{% csrf_token %}
-		{{form|crispy}}
-		
-	<div class="card-header"><h5 class="card-title"> <strong>Facility :</strong> {{post.title}}</h5>
-	<input type="submit" name="Create">
-	</form>
+	<h1>test</h1>
+	{% for facility in post.facility.all %}
+	<div class="row">
+		<div class="col-12">
+		<div class="float-left">
+			{{facility.title}}
+		</div>
+		<div class="float-right">
+			<a href="{% url 'edit_rate' post_id=post.id facility_id=facility.id %}">Rate</a>
+		</div>	
+		</div>
 	</div>
-	 {% endfor %}
 
-</div>
+
+
+	
+	 {% endfor %}
 {% endblock content %}

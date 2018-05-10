@@ -31,7 +31,7 @@ class PostForm(forms.ModelForm):
 class FacilityForm(forms.ModelForm):
 	class Meta:
 		model = FacilityRating
-		fields = ['rating']
+		fields = ['rating','comment']
 
 # class HotelForm(forms.ModelForm):
 # 	class Meta:

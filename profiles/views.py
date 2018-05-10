@@ -25,7 +25,7 @@ def profile(request, pk):
 		Clue.objects.create(user=pk, message=message)
 		profile_obj = Profile.objects.get(pk=request.user)
 		posts = posts_list(request, profile_obj.id)
-		messages.success(request, "New clue generated for your stalkers!")
+		messages.success(request, "New Post generated for your followers!")
 
 
 
@@ -55,6 +55,24 @@ def search_users(request):
 		"prey_list":prey_list
 	}
 	return render(request, 'search_users.html', context)
+
+
+def search_post(request):
+	posts = Post.objects.all()
+
+	query = request.GET.get("q")
+	if query:
+		posts = post.filter(
+			Q(hotel__icontains=query)|
+			Q(country__icontains=query)|
+			Q(city__icontains=query)|
+			Q(suitablefor__icontains=query)
+			).distinct()
+
+	context = {
+		"posts": posts,
+	}
+	return render(request, 'search_post.html', context)
 
 def follow(request, pk):
 	if request.user.is_anonymous:
@@ -187,14 +205,56 @@ def create_post(request, pk):
 	}
 	return render(request, "create_post.html", context)
 
-def rate_facilities(request, pk):
-	
-	post = Post.objects.get(pk=pk)
-	
+def rate_facilities(request, post_id, facility_id):
+	form = FacilityForm()
+	post_obj = Post.objects.get(id=post_id)
+	facility_obj = Facility.objects.get(id=facility_id)
+	if request.method == "POST":
+		form = FacilityForm(request.POST, request.FILES or None)
+		if form.is_valid():
+			post_obj = form.save(commit=False)
+			post_obj.profile = profile_obj
+			post_obj.user = request.user
+			post_obj.save()
+
+			return redirect("profile") 
+		print (form.errors)
+
 	context = {
-		"facilities": post.facility.all(),
+		"form": form,
+		"post": post_obj,
+		"facility": facility_obj,
+
 	}
+
+	return render(request, "edit_rate.html", context)
+
+
+def create_facility_rate(request, post_id, facility_id):
+	form = FacilityForm()
+	post_obj = Post.objects.get(id=post_id)
+	facility_obj = Facility.objects.get(id=facility_id)
+	if request.method == "POST":
+		form = FacilityForm(request.POST, request.FILES or None)
+		if form.is_valid():
+			post_obj = form.save(commit=False)
+			post_obj.profile = profile_obj
+			post_obj.user = request.user
+			post_obj.save()
+
+			return redirect("profile") 
+		print (form.errors)
+
+	context = {
+		"form": form,
+		"post": post_obj,
+		"facility": facility_obj,
+		"pk": profile_obj
+	}
+
 	return render(request, "rate_facilities.html", context)
+
+
 
 
 
