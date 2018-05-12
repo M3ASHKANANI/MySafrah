@@ -19,7 +19,7 @@ def profile(request, pk):
 		return redirect('signin')
 
 	my_list = []
-	profile_obj = Profile.objects.get(pk=pk)
+	profile_obj = Profile.objects.get(owner=request.user)
 	posts = profile_obj.post_set.all()
 	for post in posts:
 		my_list.append({
@@ -29,7 +29,7 @@ def profile(request, pk):
 			})
 
 	context = {
-		"profile": Profile.objects.get(pk=pk),
+		"profile": Profile.objects.get(owner=request.user),
 		"posts": posts,
 		"my_list": my_list
 	}
@@ -247,9 +247,4 @@ def create_facility_rate(request, post_id, facility_id):
 	}
 
 	return render(request, "rate_facilities.html", context)
-
-
-
-
-
 

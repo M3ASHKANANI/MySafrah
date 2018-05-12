@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">@{{profile.owner.username}}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% if profile.image %}
+        <li class="card"><img src='{{profile.image.url}}' style='width:300px; height:300px' ></li>
+        {% endif %}
+        <li class="list-group-item"><b>First Name:</b> {{profile.owner.first_name}}</li>
+        <li class="list-group-item"><b>Last Name:</b> {{profile.owner.last_name}}</li>
+        <li class="list-group-item"><b>Email Name:</b> {{profile.owner.email}}</li>
+        <li class="list-group-item"><b>Country:</b> {{profile.country}} <i class="{{ profile.country.flag_css }}"></i></li>
+        <li class="list-group-item"><b>Bio:</b> {{profile.bio}}</li>
+        <li class="list-group-item"><b>BirthDay:</b> {{profile.birthday}}</li>
+        <li class="list-group-item">Type of traveler :
+        {% for x in profile.travelpref.all %}
+          - {{x}}
+        {% endfor %}
+      </li>
+
+
+      </ul>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6 text-center">
+            <a href="{% url 'followers' profile.owner.pk %}" class="btn btn-outline-danger">Followers</a>
+          </div>
+          <div class="col-6 text-center">
+            <a href="{% url 'following' profile.owner.pk %}" class="btn btn-outline-primary">Following</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <div class="mx-auto" style="width: 200px;">
+        <a href="{% url 'create_post' pk=profile.id %}"><button type="button" class="btn btn-primary">Add New Post</button></a>
+      </div>
+
+
+
+
+{% for post in my_list %}
+      <div class="card bg-light mb-3 mx-auto" style="max-width: 55rem;">
+        {% if post.post.image %}
+         <img class="card-img-top" src="{{post.post.image.url}}" alt="Card image cap">
+        {% endif %}
+        <div class="card-header"><h5 class="card-title"> <strong>Title :</strong> {{post.post.hotel}}</h5></div>
+        <div class="card-body">
+          <p class="card-text">{{post.post.description}}</p>
+        </div>
+
+        {% for facility in post.post.facility.all %}
+          <div class="card-body">
+            <p class="card-text">
+              <div class="float-left">
+                {{facility.title}}: 
+                {% for rating in post.ratings %}
+                  {% if rating.facility == facility %}
+
+                    {{rating.rating}}
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="float-right">
+                {% for rating in post.ratings %}
+                  {% if rating.facility == facility %}
+                    <a href="{% url 'edit_rate' rating.id %}">Edit</a>
+                  {% endif %}
+                {% endfor %}
+                {% if not facility.id in post.facilities_with_rating %}
+                  <a href="{% url 'rate_facilities' post.post.id facility.id %}">Create</a>
+                {% endif %}
+              </div>
+            </p>
+          </div>
+        {% endfor %}
+    </div>
+
+
+      {% endfor %}
+
+
+
+{% endblock %}
