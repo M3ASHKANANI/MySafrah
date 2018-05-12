@@ -32,10 +32,10 @@
       <div class="card-body">
         <div class="row">
           <div class="col-6 text-center">
-            <a href="{% url 'followers' profile.owner.pk %}" class="btn btn-outline-danger">Stalkers</a>
+            <a href="{% url 'followers' profile.owner.pk %}" class="btn btn-outline-danger">Followers</a>
           </div>
           <div class="col-6 text-center">
-            <a href="{% url 'following' profile.owner.pk %}" class="btn btn-outline-primary">Prey</a>
+            <a href="{% url 'following' profile.owner.pk %}" class="btn btn-outline-primary">Following</a>
           </div>
         </div>
       </div>
@@ -51,21 +51,38 @@
 
 
 
-{% for post in posts %}
+{% for post in my_list %}
       <div class="card bg-light mb-3 mx-auto" style="max-width: 55rem;">
-        {% if post.image %}
-         <img class="card-img-top" src="{{post.image.url}}" alt="Card image cap">
+        {% if post.post.image %}
+         <img class="card-img-top" src="{{post.post.image.url}}" alt="Card image cap">
         {% endif %}
-        <div class="card-header"><h5 class="card-title"> <strong>Title :</strong> {{post.hotel}}</h5></div>
+        <div class="card-header"><h5 class="card-title"> <strong>Title :</strong> {{post.post.hotel}}</h5></div>
         <div class="card-body">
-          <p class="card-text">{{post.description}}</p>
+          <p class="card-text">{{post.post.description}}</p>
         </div>
 
-        {% for facility in post.facility.all %}
+        {% for facility in post.post.facility.all %}
           <div class="card-body">
-            <p class="card-text">{{facility.title}}
-            <a href="{% url 'rate_facilities' post.id facility.id %}"><button type="button" class="btn btn-primary">Rate Facilities</button></a>
-          </p>
+            <p class="card-text">
+              <div class="float-left">
+                {{facility.title}}: 
+                {% for rating in post.ratings %}
+                  {% if rating.facility == facility %}
+                    {{rating.rating}}
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="float-right">
+                {% for rating in post.ratings %}
+                  {% if rating.facility == facility %}
+                    <a href="{% url 'edit_rate' rating.id %}">Edit</a>
+                  {% endif %}
+                {% endfor %}
+                {% if not facility.id in post.facilities_with_rating %}
+                  <a href="{% url 'rate_facilities' post.post.id facility.id %}">Create</a>
+                {% endif %}
+              </div>
+            </p>
           </div>
         {% endfor %}
     </div>

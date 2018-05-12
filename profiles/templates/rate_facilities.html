@@ -3,26 +3,16 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Create Post
-{% endblock %}
+Rate
+{% endblock title %}
+
+
 
 {% block content %}
-<div class="container">
-	<h1>test</h1>
-	{% for facility in post.facility.all %}
-	<div class="row">
-		<div class="col-12">
-		<div class="float-left">
-			{{facility.title}}
-		</div>
-		<div class="float-right">
-			<a href="{% url 'edit_rate' post_id=post.id facility_id=facility.id %}">Rate</a>
-		</div>	
-		</div>
-	</div>
 
+	<form action="{% url 'rate_facilities' post.id facility.id %}" method='POST'>
+		{% csrf_token %}
+		{{form|crispy}}
+	<input type="submit" value="Rate" class="btn btn-outline-success">
 
-
-	
-	 {% endfor %}
 {% endblock content %}

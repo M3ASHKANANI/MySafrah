@@ -13,6 +13,6 @@ urlpatterns = [
 	path('edit/<int:pk>/', views.editprofile, name='edit'),
 	path('post/<int:pk>/', views.create_post, name='create_post'),
 
-	path('edit_rate/<int:post_id>/<int:facility_id>/', views.rate_facilities, name='edit_rate'),
+	path('edit_rate/<int:pk>/', views.edit_Facli_rate, name='edit_rate'),
 	path('rate/<int:post_id>/<int:facility_id>/', views.create_facility_rate, name='rate_facilities'),
 ]

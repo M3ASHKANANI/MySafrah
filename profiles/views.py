@@ -18,20 +18,20 @@ def profile(request, pk):
 
 		return redirect('signin')
 
+	my_list = []
 	profile_obj = Profile.objects.get(pk=pk)
-	posts = posts_list(request, profile_obj.id)
-	if request.method == "POST":
-		message = request.POST.get("message")
-		Clue.objects.create(user=pk, message=message)
-		profile_obj = Profile.objects.get(pk=request.user)
-		posts = posts_list(request, profile_obj.id)
-		messages.success(request, "New Post generated for your followers!")
-
-
+	posts = profile_obj.post_set.all()
+	for post in posts:
+		my_list.append({
+			"post":post,
+			"facilities_with_rating": post.facilityrating_set.all().values_list('facility', flat=True),
+			"ratings": post.facilityrating_set.all(),
+			})
 
 	context = {
 		"profile": Profile.objects.get(pk=pk),
 		"posts": posts,
+		"my_list": my_list
 	}
 	return render(request, 'profile.html', context)
 
@@ -205,25 +205,19 @@ def create_post(request, pk):
 	}
 	return render(request, "create_post.html", context)
 
-def rate_facilities(request, post_id, facility_id):
-	form = FacilityForm()
-	post_obj = Post.objects.get(id=post_id)
-	facility_obj = Facility.objects.get(id=facility_id)
+def edit_Facli_rate(request, pk):
+	obj = FacilityRating.objects.get(pk=pk)
+	form = FacilityForm(instance=obj)
 	if request.method == "POST":
-		form = FacilityForm(request.POST, request.FILES or None)
+		form = FacilityForm(request.POST, instance=obj)
 		if form.is_valid():
-			post_obj = form.save(commit=False)
-			post_obj.profile = profile_obj
-			post_obj.user = request.user
-			post_obj.save()
-
-			return redirect("profile") 
-		print (form.errors)
+			form.save()
+			return redirect("profile", obj.post.profile.id)
+ 
 
 	context = {
 		"form": form,
-		"post": post_obj,
-		"facility": facility_obj,
+		"obj": obj,
 
 	}
 
@@ -235,21 +229,21 @@ def create_facility_rate(request, post_id, facility_id):
 	post_obj = Post.objects.get(id=post_id)
 	facility_obj = Facility.objects.get(id=facility_id)
 	if request.method == "POST":
-		form = FacilityForm(request.POST, request.FILES or None)
+		form = FacilityForm(request.POST)
 		if form.is_valid():
-			post_obj = form.save(commit=False)
-			post_obj.profile = profile_obj
-			post_obj.user = request.user
-			post_obj.save()
+			rating = form.save(commit=False)
+			rating.post = post_obj
+			rating.owner = request.user
+			rating.facility = facility_obj
+			rating.save()
 
-			return redirect("profile") 
+			return redirect("profile", post_obj.profile.id) 
 		print (form.errors)
 
 	context = {
 		"form": form,
 		"post": post_obj,
 		"facility": facility_obj,
-		"pk": profile_obj
 	}
 
 	return render(request, "rate_facilities.html", context)
