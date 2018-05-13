@@ -43,7 +43,7 @@ def usersignin(request):
             if auth_user is not None:
                 login(request, auth_user)
                 messages.success(request, "Successfully signed in!")
-                return redirect('profile', pk=auth_user.pk)
+                return redirect('profile', pk=auth_user.profile.pk)
 
             messages.error(request, "Wrong username/password combination. Please try again.")
             return redirect("signin")
