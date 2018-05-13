@@ -14,7 +14,7 @@
 <div class="row">
       {% for post in feed  %}
   <div class="col-lg-4 col-md-3">
-    <div class="card border-info mb-3">
+    <div class="card border-info">
       {% if post.image %}
       <img class="card-img-top" src='{{post.image.url}}' alt="Card image cap">
       {% endif %}
@@ -28,6 +28,7 @@
         <li class="list-group-item"><strong>Rate : </strong>{{post.rate}}</li>
       </ul>
   </div>
+  <br>
   </div>
       {% endfor %}
 </div>

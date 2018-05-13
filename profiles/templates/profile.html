@@ -7,7 +7,7 @@
 {% block content %}
 <div class="row">
   <div class="col-12">
-    <div class="card border-info">
+    <div class="card">
       <div class="card-body">
         <h5 class="card-title text-center">@{{profile.owner.username}}</h5>
       </div>
@@ -52,7 +52,7 @@
 
 
 {% for post in my_list %}
-      <div class="card bg-light mb-3 mx-auto" style="max-width: 55rem;">
+      <div class="card bg-info mb-3 mx-auto" style="max-width: 55rem;">
         {% if post.post.image %}
          <img class="card-img-top" src="{{post.post.image.url}}" alt="Card image cap">
         {% endif %}
