@@ -5,7 +5,7 @@
 {% block content %}
 <div class="row text-center">
   <div class="col-12">
-    <h1>The people you're trying to Follow...😉</h1>
+    <h1>Your search results...😉</h1>
     <table class="table">
       <tbody>
         {% for person in users %}
@@ -16,10 +16,32 @@
             {% else %}
               <td><a href="{% url 'follow' person.pk %}" class="btn btn-outline-danger">Follow</a></td>
             {% endif %}
+          </tr>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+</div>
+<div class="row">
+      {% for post in posts  %}
+  <div class="col-lg-4 col-md-3">
+    <div class="card border-info">
+      {% if post.image %}
+      <img class="card-img-top" src='{{post.image.url}}' alt="Card image cap">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title"><strong>Hotel : </strong>{{post.hotel}}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Country : </strong>{{post.country}}</li>
+        <li class="list-group-item"><strong>City : </strong>{{post.city}}</li>
+        <li class="list-group-item"><strong>Comment : </strong>{{post.description}}</li>
+        <li class="list-group-item"><strong>Rate : </strong>{{post.rate}}</li>
+      </ul>
+  </div>
+  <br>
+  </div>
+      {% endfor %}
 </div>
 {% endblock %}

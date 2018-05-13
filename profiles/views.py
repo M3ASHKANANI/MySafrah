@@ -19,7 +19,7 @@ def profile(request, pk):
 		return redirect('signin')
 
 	my_list = []
-	profile_obj = Profile.objects.get(owner=request.user)
+	profile_obj = Profile.objects.get(pk=pk)
 	posts = profile_obj.post_set.all()
 	for post in posts:
 		my_list.append({
@@ -29,7 +29,7 @@ def profile(request, pk):
 			})
 
 	context = {
-		"profile": Profile.objects.get(owner=request.user),
+		"profile": Profile.objects.get(pk=pk),
 		"posts": posts,
 		"my_list": my_list
 	}
@@ -45,14 +45,22 @@ def search_users(request):
 		prey_list.append(prey.prey)
 
 	users = User.objects.none()
+	posts = Post.objects.none()
 
 	query = request.GET.get('q')
 	if query:
 		users = User.objects.filter(username__icontains=query)
+		posts = Post.objects.filter(
+			Q(hotel__icontains=query)|
+			Q(country__icontains=query)|
+			Q(city__icontains=query)|
+			Q(suitablefor__title__icontains=query)
+			).distinct()
 
 	context = {
 		"users":users,
-		"prey_list":prey_list
+		"prey_list":prey_list,
+		"posts": posts,
 	}
 	return render(request, 'search_users.html', context)
 

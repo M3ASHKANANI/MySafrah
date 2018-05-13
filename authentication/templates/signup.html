@@ -6,10 +6,16 @@ Sign Up
 
 
 {% block content %}
+        <div class="col-14">
+    <div class="card border-info col-12">
     <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form|crispy}}
         {{profile_form|crispy}}
-        <input class = "btn btn-outline-success" type="submit" value="Sign Up">
+        <br>
+        <input class = "btn btn-outline-info" type="submit" value="Sign Up">
+        <br> 
     </form>
+    </div>
+</div>
 {% endblock content %}
