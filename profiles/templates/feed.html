@@ -9,25 +9,29 @@
   <div class="container">
     <h1 class="display-4">Your Feed Page</h1>
   </div>
+
 </div>
 <div class="row">
-  <div class="col-12">
-    <div class="card">
+      {% for post in feed  %}
+  <div class="col-lg-4 col-md-3">
+    <div class="card border-info mb-3">
+      {% if post.image %}
+      <img class="card-img-top" src='{{post.image.url}}' alt="Card image cap">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title"><strong>Hotel : </strong>{{post.hotel}}</h5>
+      </div>
       <ul class="list-group list-group-flush">
-        {% for post in feed  %}
-          <li class="list-group-item">
-            <div class="float-left">
-              <b>{{post.profile.owner}}: </b> {{post.description}} <span class="blockquote-footer">{{post.timestamp}}</span>
-            </div>
-            <div class="float-right">
-              <i id="star-{{post.id}}" class="fas fa-star fa-spin {% if post.id in favorites %}text-warning{% endif %}" onclick="favorite_me({{post.id}})"></i>
-            </div>
-          </li>
-        {% endfor %}
+        <li class="list-group-item"><strong>Country : </strong>{{post.country}}</li>
+        <li class="list-group-item"><strong>City : </strong>{{post.city}}</li>
+        <li class="list-group-item"><strong>Comment : </strong>{{post.description}}</li>
+        <li class="list-group-item"><strong>Rate : </strong>{{post.rate}}</li>
       </ul>
-    </div>
   </div>
+  </div>
+      {% endfor %}
 </div>
+
 
 <script type="text/javascript">
     function favorite_me(id) {
