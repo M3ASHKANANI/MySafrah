@@ -16,7 +16,7 @@
 	<nav class="navbar navbar-dark bg-dark">
 		<a class="navbar-brand" href="#">@{{request.user}}</a>
 
-    <!--
+
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 	aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -26,8 +26,10 @@
 							<a class="nav-item nav-link active" href="{# {% url 'profile' profile.owner.id %} #}">Profile <span class="sr-only">(current)</span></a>
 							<a class="nav-item nav-link" href="{# {% url 'create_post' pk=profile.id %} #}">Add Post</a>
 							<a class="nav-item nav-link" href="{% url 'feed' %}">Feed</a>
-							<a class="nav-item nav-link disabled" href="#">Disabled</a>
-    -->
+							<a class="nav-item nav-link" href="{% url 'signout' %}">Sign Out</a>
+
+
+
 
 
 							{# search bar #}
@@ -41,17 +43,17 @@
 							</form>
 						</div>
 				</div>
-
 	</nav>
 
         {% else %}
 
 
 
-        
-        <li class="nav-item">
+        <nav class="navbar navbar-dark bg-dark">
+
+        <li class="nav-item text-right">
         <a class="nav-link" href="{% url 'signup' %}}">Register</a>
-        <li class="nav-item">
+        <li class="nav-item text-right">
         <a class="nav-link" href="{% url 'signin' %}}">Log in</a>
       </li>
       </li>
@@ -64,36 +66,6 @@
 
 
 		</nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		{% include "messages.html" %}
 		<br>
@@ -110,5 +82,10 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+
+		<style>
+body  {
+    background-image: url("../../static/pic1.jpg");
+}
 	</body>
 </html>

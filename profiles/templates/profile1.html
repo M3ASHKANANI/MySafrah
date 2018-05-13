@@ -9,11 +9,11 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title text-center">@{{profile.owner.username}}</h5>
       </div>
       <ul class="list-group list-group-flush">
+        <li class="col-6 text-right"><h5><strong>@{{profile.owner.username}}</strong></h5></li>
         {% if profile.image %}
-        <li class="card"><img src='{{profile.image.url}}' style='width:300px; height:300px' ></li>
+        <li class="col-6 text-left"><img src='{{profile.image.url}}' style='width:250px; height:250px'></li>
         {% endif %}
         <li class="list-group-item"><b>First Name:</b> {{profile.owner.first_name}}</li>
         <li class="list-group-item"><b>Last Name:</b> {{profile.owner.last_name}}</li>
@@ -23,7 +23,7 @@
         <li class="list-group-item"><b>BirthDay:</b> {{profile.birthday}}</li>
         <li class="list-group-item">Type of traveler :
         {% for x in profile.travelpref.all %}
-          - {{x}}
+          <i class="fas fa-plane"></i> {{x}}      
         {% endfor %}
       </li>
 
@@ -31,10 +31,16 @@
       </ul>
       <div class="card-body">
         <div class="row">
-          <div class="col-6 text-center">
+          <div class="col-4 text-center">
             <a href="{% url 'followers' profile.owner.pk %}" class="btn btn-outline-danger">Followers</a>
           </div>
-          <div class="col-6 text-center">
+
+          <div class="col-4 text-center">
+            <a href="{% url 'create_post' pk=profile.id %}"><button type="button" class="btn btn-outline-info">Add New Post</button></a>
+          </div>
+
+
+          <div class="col-4 text-center">
             <a href="{% url 'following' profile.owner.pk %}" class="btn btn-outline-primary">Following</a>
           </div>
         </div>
@@ -43,11 +49,7 @@
   </div>
 </div>
 
-
-      <div class="mx-auto" style="width: 200px;">
-        <a href="{% url 'create_post' pk=profile.id %}"><button type="button" class="btn btn-primary">Add New Post</button></a>
-      </div>
-
+<br><br>
 
 
 
@@ -56,27 +58,42 @@
         {% if post.post.image %}
          <img class="card-img-top" src="{{post.post.image.url}}" alt="Card image cap">
         {% endif %}
-        <div class="card-header"><h5 class="card-title"> <strong>Title :</strong> {{post.post.hotel}}</h5></div>
+        <div class="card-header"><h5 class="card-title"> <strong>Hotel : </strong> {{post.post.hotel}}</h5></div>
+
+        <div class="card-header"><h5 class="card-title"> <strong>Country : </strong> {{post.post.country}}</h5></div>
+
+        <div class="card-header"><h5 class="card-title"> <strong>City : </strong> {{post.post.city}}</h5></div>
+        
+        <div class="card-header"><h5 class="card-title"> <strong>Comment : </strong> {{post.post.description}}</h5></div>
+
+        <div class="card-header"><h5 class="card-title"> <strong>suitablefor : </strong></h5>
+        {% for x in post.post.suitablefor.all %}
+          <i class="fas fa-bed"></i> {{x}}           
+        {% endfor %}
+      </div>
+
+
         <div class="card-body">
-          <p class="card-text">{{post.post.description}}</p>
         </div>
 
         {% for facility in post.post.facility.all %}
           <div class="card-body">
             <p class="card-text">
               <div class="float-left">
-                {{facility.title}}: 
+                {{facility.title}} :
+
                 {% for rating in post.ratings %}
                   {% if rating.facility == facility %}
 
-                    {{rating.rating}}
+                    <br> Rating : {{rating.rating}}  <i class="far fa-star"></i> <br>
+                    Commint : {{rating.comment}}
                   {% endif %}
                 {% endfor %}
               </div>
               <div class="float-right">
                 {% for rating in post.ratings %}
                   {% if rating.facility == facility %}
-                    <a href="{% url 'edit_rate' rating.id %}">Edit</a>
+                    <a href="{% url 'edit_rate' rating.id %}"><br>Edit</a>
                   {% endif %}
                 {% endfor %}
                 {% if not facility.id in post.facilities_with_rating %}

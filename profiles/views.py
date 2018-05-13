@@ -33,7 +33,7 @@ def profile(request, pk):
 		"posts": posts,
 		"my_list": my_list
 	}
-	return render(request, 'profile.html', context)
+	return render(request, 'profile1.html', context)
 
 def search_users(request):
 	if request.user.is_anonymous:
